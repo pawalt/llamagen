@@ -24,7 +24,7 @@ python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,!=3.6.*,>=2.7
 
 [[package]]
 name = "ctransformers"
-version = "0.2.18"
+version = "0.2.24"
 description = "Python bindings for the Transformer models implemented in C/C++ using GGML library."
 category = "main"
 optional = false
@@ -35,6 +35,7 @@ huggingface-hub = "*"
 py-cpuinfo = ">=9.0.0,<10.0.0"
 
 [package.extras]
+cuda = ["nvidia-cublas-cu12", "nvidia-cuda-runtime-cu12"]
 gptq = ["exllama (==0.1.0)"]
 tests = ["pytest"]
 
@@ -163,7 +164,7 @@ use-chardet-on-py3 = ["chardet (>=3.0.2,<6)"]
 
 [[package]]
 name = "tqdm"
-version = "4.65.0"
+version = "4.66.1"
 description = "Fast, Extensible Progress Meter"
 category = "main"
 optional = false
@@ -173,7 +174,7 @@ python-versions = ">=3.7"
 colorama = {version = "*", markers = "platform_system == \"Windows\""}
 
 [package.extras]
-dev = ["py-make (>=0.1.0)", "twine", "wheel"]
+dev = ["pytest (>=6)", "pytest-cov", "pytest-timeout", "pytest-xdist"]
 notebook = ["ipywidgets (>=6)"]
 slack = ["slack-sdk"]
 telegram = ["requests"]
@@ -203,7 +204,7 @@ zstd = ["zstandard (>=0.18.0)"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "58e7be573c87a646dfa054ff85cae667a968f7326ebb76773897301059b8e7da"
+content-hash = "f8ab580d7d85ca23671832a1a97d74374c880da46c96e6fc216555b0ebd75783"
 
 [metadata.files]
 certifi = [
@@ -292,8 +293,8 @@ colorama = [
     {file = "colorama-0.4.6.tar.gz", hash = "sha256:08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44"},
 ]
 ctransformers = [
-    {file = "ctransformers-0.2.18-py3-none-any.whl", hash = "sha256:6d693e269d797f2485c86c9e8a322acb1464e782bf22547ec57e09d4ccbb4523"},
-    {file = "ctransformers-0.2.18.tar.gz", hash = "sha256:fc09c399baf16d99dd44aa6671d49aa4060d8904324c2527aa58e8831476c370"},
+    {file = "ctransformers-0.2.24-py3-none-any.whl", hash = "sha256:fa2ad7a38726c3ad6e57d1aff696f6e89fe3c0de5df2109b579cb6bc6c2ef599"},
+    {file = "ctransformers-0.2.24.tar.gz", hash = "sha256:bb463204f557d00d533e1dc50346e0b57870cea68965ec135d3fa8db1c76ed2e"},
 ]
 filelock = [
     {file = "filelock-3.12.2-py3-none-any.whl", hash = "sha256:cbb791cdea2a72f23da6ac5b5269ab0a0d161e9ef0100e653b69049a7706d1ec"},
@@ -366,8 +367,8 @@ requests = [
     {file = "requests-2.31.0.tar.gz", hash = "sha256:942c5a758f98d790eaed1a29cb6eefc7ffb0d1cf7af05c3d2791656dbd6ad1e1"},
 ]
 tqdm = [
-    {file = "tqdm-4.65.0-py3-none-any.whl", hash = "sha256:c4f53a17fe37e132815abceec022631be8ffe1b9381c2e6e30aa70edc99e9671"},
-    {file = "tqdm-4.65.0.tar.gz", hash = "sha256:1871fb68a86b8fb3b59ca4cdd3dcccbc7e6d613eeed31f4c332531977b89beb5"},
+    {file = "tqdm-4.66.1-py3-none-any.whl", hash = "sha256:d302b3c5b53d47bce91fea46679d9c3c6508cf6332229aa1e7d8653723793386"},
+    {file = "tqdm-4.66.1.tar.gz", hash = "sha256:d88e651f9db8d8551a62556d3cff9e3034274ca5d66e93197cf2490e2dcb69c7"},
 ]
 typing-extensions = [
     {file = "typing_extensions-4.7.1-py3-none-any.whl", hash = "sha256:440d5dd3af93b060174bf433bccd69b0babc3b15b1a8dca43789fd7f61514b36"},
