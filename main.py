@@ -13,4 +13,9 @@ active_model = CODE_LLAMA_13B
 
 llm = AutoModelForCausalLM.from_pretrained(f"models/{active_model}", model_type='llama', gpu_layers=1)
 
-run_chat(llm)
+refactor_prompt = llm.tokenize(refactor.get_refactor_prompt())
+
+streaming.stream_response(llm, llm.generate(
+    tokens=refactor_prompt,
+    temperature=1,
+))

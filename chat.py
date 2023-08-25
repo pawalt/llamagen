@@ -1,5 +1,4 @@
 import prompting
-import threading
 from typing import List, Dict
 import ctransformers
 import streaming
@@ -10,48 +9,49 @@ def format_messages(messages) -> str:
         ret += f"{message['role']}: {message['message']}\n"
     return ret
 
-def get_chat_prompt() -> str:
+def get_chat_prompt(messages: List[Dict], user_input: str) -> str:
     system_prompt = f"""
 You are a helpful, smart assistant that can answer any question with perfect accuracy.
 You are an expert Golang developer.
 Respond with solely the answer to the user's question with no decoration text.
+
+Previous messages:
+{format_messages(messages)}
 """.strip()
 
-    return prompting.get_llama_system_prompt(system_prompt)
+    return prompting.get_llama_prompt(
+        system_prompt=system_prompt,
+        message=user_input,
+    )
 
 def run_chat(llm: ctransformers.LLM):
-    cp = get_chat_prompt()
-    print(cp)
-
-    tokens = llm.tokenize(cp)
-    system_preload = lambda: llm.eval(tokens)
-    t = threading.Thread(target=system_preload)
-    t.start()
-
+    messages = [{
+        "role": "assistant",
+        "message": "How can I help you today?"
+    }]
     while True:
-        user_input = input("human: ").strip()
-        user_input += " [/INST]"
+        user_input = input("human: ")
 
-        tokens = llm.tokenize(user_input)
+        new_prompt = get_chat_prompt(messages, user_input)
 
-        t.join()
+        print(new_prompt)
+
+        tokens = llm.tokenize(new_prompt)
 
         print("ai: ", end="", flush=True)
-        streaming.stream_response(llm, llm.generate(
+        resp = streaming.stream_response(llm, llm.generate(
             tokens=tokens,
             temperature=1,
-            reset=False,
         ))
 
+        messages.append({
+            "role": "human",
+            "message": user_input,
+        })
 
-        streaming.stream_response(llm, llm.generate(
-            tokens=llm.tokenize("what programming languages do you know"),
-            temperature=1,
-            reset=False,
-        ))
-
-        before_next = "<s>[INST]"
-        tokens = llm.tokenize(before_next)
-        llm.eval(tokens)
+        messages.append({
+            "role": "assistant",
+            "message": resp,
+        })
 
         print("")
