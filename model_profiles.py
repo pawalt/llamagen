@@ -24,3 +24,9 @@ CODE_LLAMA_13B = ModelProfile(
     model_type="llama",
     prompt_style="llama",
 )
+
+ORCA_13B = ModelProfile(
+    model_path="orca-mini-13b.ggmlv3.q5_K_M.bin",
+    model_type="llama",
+    prompt_style="alpaca",
+)
