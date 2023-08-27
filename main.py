@@ -4,18 +4,21 @@ import prompting
 from chat import run_chat
 import refactor
 import streaming
+import model_profiles
 
-NOUS_HERMES_7B = "nous-hermes-llama-2-7b.ggmlv3.q4_K_M.bin"
-CODE_LLAMA_7B = "codellama-7b-instruct.Q5_K_M.gguf"
-CODE_LLAMA_13B = "codellama-13b-instruct.Q5_K_M.gguf"
+active_model = model_profiles.NOUS_HERMES_7B
 
-active_model = CODE_LLAMA_13B
+llm = AutoModelForCausalLM.from_pretrained(
+    f"models/{active_model.model_path}",
+    model_type=active_model.model_type,
+    gpu_layers=1,
+)
 
-llm = AutoModelForCausalLM.from_pretrained(f"models/{active_model}", model_type='llama', gpu_layers=1)
+run_chat(llm, active_model)
 
-refactor_prompt = llm.tokenize(refactor.get_refactor_prompt())
-
-streaming.stream_response(llm, llm.generate(
-    tokens=refactor_prompt,
-    temperature=1,
-))
+# refactor_prompt = llm.tokenize(refactor.get_refactor_prompt())
+# 
+# streaming.stream_response(llm, llm.generate(
+#     tokens=refactor_prompt,
+#     temperature=1,
+# ))
