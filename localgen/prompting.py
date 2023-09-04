@@ -1,5 +1,3 @@
-import model_profiles
-
 def get_prompt_for_model(prompt_style: str, system_prompt: str, message: str):
     match prompt_style:
         case "alpaca":

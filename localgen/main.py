@@ -17,9 +17,20 @@ llm = AutoModelForCausalLM.from_pretrained(
 
 # run_chat(llm, active_model)
 
-refactor_prompt = llm.tokenize(refactor.get_refactor_prompt())
+refactor_prompt = refactor.build_full_prompt(active_model)
+print(refactor_prompt)
+
+tokens = llm.tokenize(refactor_prompt)
+print(len(tokens))
 
 streaming.stream_response(llm, llm.generate(
-    tokens=refactor_prompt,
-    temperature=1,
+    tokens=tokens,
+    temperature=.7,
 ))
+
+# refactor_prompt = llm.tokenize(refactor.get_refactor_prompt())
+# 
+# streaming.stream_response(llm, llm.generate(
+#     tokens=refactor_prompt,
+#     temperature=1,
+# ))

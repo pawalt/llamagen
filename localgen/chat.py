@@ -46,9 +46,6 @@ def run_chat(llm: ctransformers.LLM, profile: model_profiles.ModelProfile):
 
         tokens = llm.tokenize(new_prompt)
 
-        print(new_prompt)
-        print(f"num tokens: {len(tokens)}")
-
         print("ai: ", end="", flush=True)
         resp = streaming.stream_response(llm, llm.generate(
             tokens=tokens,

@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "llamagen"
+name = "llmkit"
 version = "0.1.0"
 description = ""
 authors = ["Peyton Walters <peyton@cockroachlabs.com>"]
@@ -8,6 +8,11 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.10"
 ctransformers = "^0.2.24"
+langchain = "^0.0.279"
+llama-cpp-python = "^0.1.83"
+chromadb = "^0.4.8"
+gpt4all = "^1.0.9"
+tqdm = "^4.66.1"
 
 
 [build-system]
