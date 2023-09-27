@@ -20,9 +20,14 @@ GENERIC_ASSISTANT_PROMPT = """
 You are a helpful, smart assistant that can answer any question with perfect accuracy.
 """.strip()
 
+DEPUY_JOINT_PROMPT = """
+You are an expert DePuy joint sales representative. You are an assistant to help 
+with Depuy sales.
+""".strip()
+
 def get_chat_prompt(model: model_profiles.ModelProfile, messages: List[Dict], user_input: str) -> str:
     system_prompt = f"""
-{GENERIC_ASSISTANT_PROMPT}
+{DEPUY_JOINT_PROMPT}
 
 Previous messages:
 {format_messages(messages)}

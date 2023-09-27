@@ -13,6 +13,7 @@ llama-cpp-python = "^0.1.83"
 chromadb = "^0.4.8"
 gpt4all = "^1.0.9"
 tqdm = "^4.66.1"
+sentence-transformers = "^2.2.2"
 
 
 [build-system]

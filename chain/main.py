@@ -45,6 +45,8 @@ def get_repo_docs():
         md_files = p.glob("**/*.md")
         total_files = total_files + list(go_files) + list(md_files)
     for fpath in total_files:
+        if "node_modules" in  str(fpath):
+            continue
         with open(fpath, "r") as f:
             relpath = fpath.relative_to(repo_base)
             metadata_url = f"managed-service/{relpath}"
@@ -82,10 +84,11 @@ def get_llm():
         callbacks=[StreamingStdOutCallbackHandler()],
         n_gpu_layers=1,
 #        grammar_path="grammars/json.gbnf",
-        n_ctx=8192,
+        n_ctx=16384,
         max_tokens=512,
         f16_kv=True,
         verbose=False,
+        temperature=0,
     )
 
 def run_rag():
@@ -98,18 +101,18 @@ def run_rag():
         prompt_style=ACTIVE_MODEL.prompt_style,
         system_prompt="""you are an expert over the cockroachdb cloud codebase.
 the user has asked you a question, and the first step to answering it is to retrieve
-information about the question. respond with a natural-language search question to use
-to get more information about the codebase.
+information about the question. respond with a natural-language search that is meant
+to be queried into a vector store.
 """.strip(),
         message=query,
-    ) + "Natural language query: "
+    ) + "vector store query: "
     nl_query = llm(query_prompt).strip()
 
-    found_docs = docs_store.similarity_search(nl_query, k=4)
+    found_docs = docs_store.similarity_search(nl_query, k=5)
     system_sum_prompt = """you are an expert over the cockroachdb cloud codebase.
 the user has asked a question, and the following chunks from files have been provided as context.
 use the information from the chunks to answer the user's question. respond with an answer
-to the user's question.
+to the user's question. If you don't know the answer, just say you don't know.
 """
     for doc in found_docs:
         fname = doc.metadata["source"]
@@ -123,7 +126,9 @@ Content: {content}
         system_prompt=system_sum_prompt,
         message=query,
     )
+    print(rag_prompt)
     answer = llm(rag_prompt)
     print(answer)
 
+# create_db()
 run_rag()
